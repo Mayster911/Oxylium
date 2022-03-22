@@ -38,9 +38,9 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="UI Password"/>
-                        <TextBox Grid.Column="1" Text="{Binding PasswordText}" IsEnabled="{Binding IsPasswordEnabled}"/>
+                        <TextBox Grid.Column="1" Text="{Binding PasswordText, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsPasswordEnabled}"/>
 
-                        <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="Use rubber duck" Margin="5,5,5,0" IsChecked="{Binding UseRubberDuck}" IsEnabled="{Binding IsUseRubberDuckEnabled}" />
+                        <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="Use rubber duck" Margin="5,5,5,0" IsChecked="{Binding IsUseRubberDuckSelected}" IsEnabled="{Binding IsUseRubberDuckEnabled}" />
                     </Grid>
                 </GroupBox>
             </StackPanel>

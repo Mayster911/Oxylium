@@ -9,7 +9,7 @@
              Padding="5">
     <StackPanel>
         <Label Content="Chained dependencies" HorizontalAlignment="Left" Margin="5"/>
-        <CheckBox HorizontalAlignment="Left" Content="1" IsChecked="{Binding IsOneChecked}"     IsEnabled="{Binding IsOneEnabled}"      Margin="5"/>
+        <CheckBox HorizontalAlignment="Left" Content="1" IsChecked="{Binding IsOneChecked}"                                             Margin="5"/>
         <CheckBox HorizontalAlignment="Left" Content="2" IsChecked="{Binding IsTwoChecked}"     IsEnabled="{Binding IsTwoEnabled}"      Margin="5"/>
         <CheckBox HorizontalAlignment="Left" Content="3" IsChecked="{Binding IsThreeChecked}"   IsEnabled="{Binding IsThreeEnabled}"    Margin="5"/>
         <CheckBox HorizontalAlignment="Left" Content="4" IsChecked="{Binding IsFourChecked}"    IsEnabled="{Binding IsFourEnabled}"     Margin="5"/>

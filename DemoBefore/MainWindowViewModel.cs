@@ -16,8 +16,15 @@ namespace DemoBefore
         public MainWindowViewModel()
         {
             notUsefulViewModel = new NotUsefulViewModel();
-            modeOneViewModel = new ModeOneViewModel();
-            modeTwoViewModel = new ModeTwoViewModel();
+            modeOneViewModel = new ModeOneViewModel
+            {
+                AreSettingsEnabledFunc = AreSettingsEnabled,
+                UseRubberDuckFunc = GetIsUseRubberDuckSelected
+            };
+            modeTwoViewModel = new ModeTwoViewModel
+            {
+                NotifyThreeOrFourChanged = NotifyThreeOrFourChanged
+            };
         }
 
         private bool _IsUsefulnessEnabled;
@@ -25,7 +32,14 @@ namespace DemoBefore
         public bool IsUsefulnessEnabled
         {
             get { return _IsUsefulnessEnabled; }
-            set { _IsUsefulnessEnabled = value; OnPropertyChanged(); }
+            set 
+            { 
+                _IsUsefulnessEnabled = value; 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ActiveViewModel));
+                OnPropertyChanged(nameof(IsPasswordEnabled));
+                OnPropertyChanged(nameof(IsUseRubberDuckEnabled));
+            }
         }
 
         private ModesEnum _Mode;
@@ -33,7 +47,15 @@ namespace DemoBefore
         public ModesEnum Mode
         {
             get { return _Mode; }
-            set { _Mode = value; OnPropertyChanged(); }
+            set { 
+                _Mode = value; 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsModeOneSelected));
+                OnPropertyChanged(nameof(IsModeTwoSelected));
+                OnPropertyChanged(nameof(ActiveViewModel));
+                OnPropertyChanged(nameof(IsPasswordEnabled));
+                OnPropertyChanged(nameof(IsUseRubberDuckEnabled));
+            }
         }
 
         public bool IsModeOneSelected
@@ -75,7 +97,13 @@ namespace DemoBefore
         public string PasswordText
         {
             get { return _PasswordText; }
-            set { _PasswordText = value; OnPropertyChanged(); }
+            set 
+            { 
+                _PasswordText = value; 
+                OnPropertyChanged();
+                modeOneViewModel.OnPropertyChanged(nameof(modeOneViewModel.AreSettingsEnabled));
+                modeOneViewModel.OnPropertyChanged(nameof(modeOneViewModel.IsCSettingEnabled));
+            }
         }
 
         public bool IsPasswordEnabled
@@ -86,12 +114,48 @@ namespace DemoBefore
             }
         }
 
-        private bool _UseRubberDuck = false;
+        private bool _IsUseRubberDuckSelected = false;
 
-        public bool UseRubberDuck
+        public bool IsUseRubberDuckSelected
         {
-            get { return _UseRubberDuck; }
-            set { _UseRubberDuck = value; OnPropertyChanged(); }
+            get { return _IsUseRubberDuckSelected; }
+            set 
+            { 
+                _IsUseRubberDuckSelected = value; 
+                OnPropertyChanged();
+                modeOneViewModel.OnPropertyChanged(nameof(modeOneViewModel.IsCSettingEnabled));
+            }
+        }
+
+        public bool IsUseRubberDuckEnabled
+        {
+            get 
+            {
+                if (!_IsUsefulnessEnabled)
+                    return false;
+
+                if (_Mode == ModesEnum.ModeOne)
+                    return true;
+
+                return !modeTwoViewModel.IsThreeChecked && !modeTwoViewModel.IsFourChecked; 
+            }
+        }
+
+
+
+        private bool AreSettingsEnabled()
+        {
+            return _PasswordText == "1024";
+        }
+
+        private bool GetIsUseRubberDuckSelected()
+        {
+            return _IsUseRubberDuckSelected;
+        }
+
+        private void NotifyThreeOrFourChanged()
+        {
+            OnPropertyChanged(nameof(IsUseRubberDuckEnabled));
         }
     }
 }

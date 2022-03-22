@@ -9,5 +9,102 @@ namespace DemoBefore
 {
     public class ModeTwoViewModel : ViewModelBase
     {
+        public Action? NotifyThreeOrFourChanged { get; set; }
+
+        private bool _IsOneChecked;
+
+        public bool IsOneChecked
+        {
+            get { return _IsOneChecked; }
+            set 
+            { 
+                _IsOneChecked = value;
+                if (!value)
+                {
+                    _IsTwoChecked = false;
+                    _IsThreeChecked = false;
+                    _IsFourChecked = false;
+                    OnPropertyChanged(nameof(IsTwoChecked));
+                    OnPropertyChanged(nameof(IsThreeChecked));
+                    OnPropertyChanged(nameof(IsFourChecked));
+                }
+                OnPropertyChanged(); 
+                OnPropertyChanged(nameof(IsTwoEnabled)); 
+                OnPropertyChanged(nameof(IsThreeEnabled)); 
+                OnPropertyChanged(nameof(IsFourEnabled)); 
+            }
+        }
+
+        private bool _IsTwoChecked;
+
+        public bool IsTwoChecked
+        {
+            get { return IsOneChecked && _IsTwoChecked; }
+            set 
+            { 
+                _IsTwoChecked = value;
+                if (!value)
+                {
+                    _IsThreeChecked = false;
+                    _IsFourChecked = false;
+                    OnPropertyChanged(nameof(IsThreeChecked));
+                    OnPropertyChanged(nameof(IsFourChecked));
+                }
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsTwoEnabled));
+                OnPropertyChanged(nameof(IsThreeEnabled));
+                OnPropertyChanged(nameof(IsFourEnabled));
+            }
+        }
+
+        public bool IsTwoEnabled
+        {
+            get { return _IsOneChecked; }
+        }
+
+        private bool _IsThreeChecked;
+
+        public bool IsThreeChecked
+        {
+            get { return IsTwoChecked && _IsThreeChecked; }
+            set 
+            { 
+                _IsThreeChecked = value;
+                if (!value)
+                {
+                    _IsFourChecked = false;
+                    OnPropertyChanged(nameof(IsFourChecked));
+                }
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsTwoEnabled));
+                OnPropertyChanged(nameof(IsThreeEnabled));
+                OnPropertyChanged(nameof(IsFourEnabled));
+                NotifyThreeOrFourChanged?.Invoke();
+            }
+        }
+
+        public bool IsThreeEnabled
+        {
+            get { return _IsTwoChecked; }
+        }
+
+        private bool _IsFourChecked;
+
+        public bool IsFourChecked
+        {
+            get { return IsThreeChecked && _IsFourChecked; }
+            set 
+            { 
+                _IsFourChecked = value;
+                OnPropertyChanged(); 
+                NotifyThreeOrFourChanged?.Invoke();
+            }
+        }
+
+        public bool IsFourEnabled
+        {
+            get { return _IsThreeChecked; }
+        }
+
     }
 }

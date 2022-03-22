@@ -10,8 +10,9 @@
              Padding="5">
     <StackPanel>
         <Label Content="Write the password '1024' to unlock these settings" Margin="5"/>
-        <CheckBox Content="A" Margin="5" IsChecked="{Binding IsAChecked}"/>
-        <CheckBox Content="B" Margin="5" IsChecked="{Binding IsBChecked}"/>
-        <CheckBox Content="C" Margin="5" IsChecked="{Binding IsCChecked}"/>
+        <CheckBox Content="A" Margin="5" IsChecked="{Binding IsAChecked}" IsEnabled="{Binding AreSettingsEnabled}"/>
+        <CheckBox Content="B" Margin="5" IsChecked="{Binding IsBChecked}" IsEnabled="{Binding AreSettingsEnabled}"/>
+        <Label Content="Additionally, check the 'Use the rubber duck' setting to unlock this setting" Margin="5"/>
+        <CheckBox Content="C" Margin="5" IsChecked="{Binding IsCChecked}" IsEnabled="{Binding IsCSettingEnabled}"/>
     </StackPanel>
 </UserControl>
