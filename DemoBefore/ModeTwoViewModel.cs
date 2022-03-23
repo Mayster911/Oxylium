@@ -24,14 +24,14 @@ namespace DemoBefore
                     _IsTwoChecked = false;
                     _IsThreeChecked = false;
                     _IsFourChecked = false;
-                    OnPropertyChanged(nameof(IsTwoChecked));
-                    OnPropertyChanged(nameof(IsThreeChecked));
-                    OnPropertyChanged(nameof(IsFourChecked));
                 }
                 OnPropertyChanged(); 
                 OnPropertyChanged(nameof(IsTwoEnabled)); 
                 OnPropertyChanged(nameof(IsThreeEnabled)); 
                 OnPropertyChanged(nameof(IsFourEnabled)); 
+                OnPropertyChanged(nameof(IsTwoChecked));
+                OnPropertyChanged(nameof(IsThreeChecked));
+                OnPropertyChanged(nameof(IsFourChecked));
             }
         }
 
@@ -47,13 +47,13 @@ namespace DemoBefore
                 {
                     _IsThreeChecked = false;
                     _IsFourChecked = false;
-                    OnPropertyChanged(nameof(IsThreeChecked));
-                    OnPropertyChanged(nameof(IsFourChecked));
                 }
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsTwoEnabled));
                 OnPropertyChanged(nameof(IsThreeEnabled));
                 OnPropertyChanged(nameof(IsFourEnabled));
+                OnPropertyChanged(nameof(IsThreeChecked));
+                OnPropertyChanged(nameof(IsFourChecked));
             }
         }
 
@@ -73,12 +73,12 @@ namespace DemoBefore
                 if (!value)
                 {
                     _IsFourChecked = false;
-                    OnPropertyChanged(nameof(IsFourChecked));
                 }
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsTwoEnabled));
                 OnPropertyChanged(nameof(IsThreeEnabled));
                 OnPropertyChanged(nameof(IsFourEnabled));
+                OnPropertyChanged(nameof(IsFourChecked));
                 NotifyThreeOrFourChanged?.Invoke();
             }
         }
