@@ -1,0 +1,63 @@
+﻿<Window x:Class="DemoAfter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DemoAfter" 
+        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        mc:Ignorable="d"
+        Title="Demo before" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Width="200" Padding="5" BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <StackPanel>
+                <GroupBox Padding="5">
+                    <GroupBox.Header>
+                        <CheckBox Content="Enable usefulness" IsChecked="{Binding IsUsefulnessEnabled}"/>
+                    </GroupBox.Header>
+
+                    <StackPanel>
+                        <RadioButton Margin="0,5,0,0" Content="Mode 1" IsChecked="{Binding IsModeOneSelected}" IsEnabled="{Binding IsUsefulnessEnabled}"/>
+                        <RadioButton Margin="0,5,0,0" Content="Mode 2" IsChecked="{Binding IsModeTwoSelected}" IsEnabled="{Binding IsUsefulnessEnabled}"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Additional Settings" Padding="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="UI Password"/>
+                        <TextBox Grid.Column="1" Text="{Binding PasswordText, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsPasswordEnabled}"/>
+
+                        <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="Use rubber duck" Margin="5,5,5,0" IsChecked="{Binding IsUseRubberDuckSelected}" IsEnabled="{Binding IsUseRubberDuckEnabled}" />
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+        </Border>
+
+        <ContentControl Grid.Column="1" Content="{Binding ActiveViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type local:NotUsefulViewModel}">
+                    <local:NotUseful/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:ModeOneViewModel}">
+                    <local:ModeOne/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:ModeTwoViewModel}">
+                    <local:ModeTwo/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+    </Grid>
+</Window>

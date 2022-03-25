@@ -1,7 +1,9 @@
-﻿namespace Oxylium
+﻿using System.Runtime.CompilerServices;
+
+namespace Oxylium
 {
     public interface IRaisePropertyChanged
     {
-        void RaisePropertyChanged(string propertyName);
+        void RaisePropertyChanged([CallerMemberName] string propertyName = "");
     }
 }
