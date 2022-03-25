@@ -1,7 +1,7 @@
 # Oxylium
 Problem: Let us assume we're maintaining a WPF application which heavily relies on the property binding mechanism for our controls and the INotifyPropertyChanged interface. Some such applications have numerous transitive dependencies between various controls - and thus by extension - various properties. When adding a new property, the programmer must not only refresh this property, but also others which depend on it, and then all the properties that depend on those properties and so on. Naturally, such an application becomes slow to extend and difficult to maintain.
 
-Solution: Oxylium provides a simple NotifyPropertyChangedMediator. In it, classes that can raise a PropertyChanged can be registered, along with their properties. A notification of a property changing is then reported to all dependent classes, along with the properties that need to be refreshed.
+Solution: Oxylium provides a simple NotifyPropertyChangedMediator. In it, classes that can raise a PropertyChanged can be registered, along with their properties. A notification of a property changing is then reported to all dependent objects, along with the properties that need to be refreshed.
 
 Currently supported .NET version: .NET 6
 
