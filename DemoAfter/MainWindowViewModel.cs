@@ -22,6 +22,11 @@ namespace DemoAfter
             };
             modeTwoViewModel = new ModeTwoViewModel(mediator);
 
+            // What's better?
+            // 1. It's no longer necessary to pass a notifier function to ModeTwoViewModel - the mediator refreshes the registered properties
+            // 2. All inter-property dependencies are located in the constructors instead of the properties, even if the dependencies are inter-viewmodel
+            // 3. ModeTwoViewModel now leverages a chain of notifications for it's checkboxes - 6 lines of registration replaced 15 OnPropertyChanged calls.
+
             mediator.RegisterQ(this, ActiveViewModel,           IsUsefulnessEnabled);
             mediator.RegisterQ(this, IsPasswordEnabled,         IsUsefulnessEnabled);
             mediator.RegisterQ(this, IsUseRubberDuckEnabled,    IsUsefulnessEnabled);
