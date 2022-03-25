@@ -5,16 +5,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Authors>Mayster</Authors>
-    <Description>Provides a NotifyPropertyChangedMediator for easy management of inter-property dependencies</Description>
-    <Copyright>© 2022</Copyright>
-    <PackageProjectUrl></PackageProjectUrl>
+    <Authors>Krzysztof Sosna</Authors>
+    <Description>Provides a NotifyPropertyChangedMediator for easy management of inter-property dependencies.</Description>
+    <Copyright>© Krzysztof Sosna 2022</Copyright>
+    <PackageProjectUrl>https://github.com/Mayster911/Oxylium</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Mayster911/Oxylium</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>INotifyPropertyChanged;MVVM;Mediator</PackageTags>
     <PackageReleaseNotes>Base functionality: register properties that depend on other properties and propagate their changes.</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression> MIT</PackageLicenseExpression>
+    <Company></Company>
   </PropertyGroup>
 
   <ItemGroup>
