@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Oxylium
@@ -65,6 +66,9 @@ namespace Oxylium
 
         public void RegisterBetween(IRaisePropertyChanged item, string propertyDepends, IRaisePropertyChanged onItem, string onProperty)
         {
+            ThrowIfPropertyDoesNotExist(item.GetType(), propertyDepends);
+            ThrowIfPropertyDoesNotExist(onItem.GetType(), onProperty);
+
             var source = new NotificationItem(onItem, onProperty);
             var target = new NotificationItem(item, propertyDepends);
 
@@ -110,6 +114,13 @@ namespace Oxylium
         private static string GetProperty(string callerArgumentExpression)
         {
             return callerArgumentExpression.Split(".", StringSplitOptions.RemoveEmptyEntries).Last();
+        }
+
+        private static void ThrowIfPropertyDoesNotExist(Type type, string propertyName)
+        {
+            var properties = type.GetProperties(BindingFlags.Public);
+            if (!properties.Any(p => p.Name == propertyName))
+                throw new ArgumentException($"A public property named \"{propertyName}\" does not exist on type \"{type.Name}\"", nameof(propertyName));
         }
     }
 }
