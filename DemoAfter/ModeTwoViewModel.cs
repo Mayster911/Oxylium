@@ -14,11 +14,9 @@ namespace DemoAfter
             mediator.RegisterQ(this, IsTwoEnabled, IsOneChecked);
             mediator.RegisterQ(this, IsTwoChecked, IsOneChecked);
 
-            mediator.RegisterQ(this, IsTwoEnabled, IsTwoChecked);
             mediator.RegisterQ(this, IsThreeEnabled, IsTwoChecked);
             mediator.RegisterQ(this, IsThreeChecked, IsTwoChecked);
 
-            mediator.RegisterQ(this, IsThreeEnabled, IsThreeChecked);
             mediator.RegisterQ(this, IsFourEnabled, IsThreeChecked);
             mediator.RegisterQ(this, IsFourChecked, IsThreeChecked);
         }
