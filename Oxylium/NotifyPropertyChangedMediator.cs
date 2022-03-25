@@ -118,9 +118,9 @@ namespace Oxylium
 
         private static void ThrowIfPropertyDoesNotExist(Type type, string propertyName)
         {
-            var properties = type.GetProperties(BindingFlags.Public);
+            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             if (!properties.Any(p => p.Name == propertyName))
-                throw new ArgumentException($"A public property named \"{propertyName}\" does not exist on type \"{type.Name}\"", nameof(propertyName));
+                throw new ArgumentException($"A public instance property named \"{propertyName}\" does not exist on type \"{type.Name}\"", nameof(propertyName));
         }
     }
 }
