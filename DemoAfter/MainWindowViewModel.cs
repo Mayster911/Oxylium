@@ -12,30 +12,33 @@ namespace DemoAfter
 
         public MainWindowViewModel()
         {
+            mediator = new NotifyPropertyChangedMediator();
+
             notUsefulViewModel = new NotUsefulViewModel();
-            modeOneViewModel = new ModeOneViewModel
+            modeOneViewModel = new ModeOneViewModel(mediator)
             {
                 AreSettingsEnabledFunc = AreSettingsEnabled,
                 UseRubberDuckFunc = GetIsUseRubberDuckSelected
             };
-            modeTwoViewModel = new ModeTwoViewModel
-            {
-                NotifyThreeOrFourChanged = NotifyThreeOrFourChanged
-            };
+            modeTwoViewModel = new ModeTwoViewModel(mediator);
 
-            mediator = new NotifyPropertyChangedMediator();
+            mediator.RegisterQ(this, ActiveViewModel,           IsUsefulnessEnabled);
+            mediator.RegisterQ(this, IsPasswordEnabled,         IsUsefulnessEnabled);
+            mediator.RegisterQ(this, IsUseRubberDuckEnabled,    IsUsefulnessEnabled);
 
-            mediator.RegisterQ(this, ActiveViewModel, IsUsefulnessEnabled);
-            mediator.RegisterQ(this, IsPasswordEnabled, IsUsefulnessEnabled);
-            mediator.RegisterQ(this, IsUseRubberDuckEnabled, IsUsefulnessEnabled);
+            mediator.RegisterQ(this, IsModeOneSelected,         Mode);
+            mediator.RegisterQ(this, IsModeTwoSelected,         Mode);
+            mediator.RegisterQ(this, ActiveViewModel,           Mode);
+            mediator.RegisterQ(this, IsPasswordEnabled,         Mode);
+            mediator.RegisterQ(this, IsUseRubberDuckEnabled,    Mode);
 
-            mediator.RegisterQ(this, IsModeOneSelected, Mode);
-            mediator.RegisterQ(this, IsModeTwoSelected, Mode);
-            mediator.RegisterQ(this, ActiveViewModel, Mode);
-            mediator.RegisterQ(this, IsPasswordEnabled, Mode);
-            mediator.RegisterQ(this, IsUseRubberDuckEnabled, Mode);
+            mediator.RegisterBetweenQ(modeOneViewModel, modeOneViewModel.AreSettingsEnabled,    this, PasswordText);
+            mediator.RegisterBetweenQ(modeOneViewModel, modeOneViewModel.IsCSettingEnabled,     this, PasswordText);
 
-            mediator.RegisterQ(modeOneViewModel, modeOneViewModel.AreSettingsEnabled, this, (object)PasswordText);
+            mediator.RegisterBetweenQ(modeOneViewModel, modeOneViewModel.IsCSettingEnabled,     this, IsUseRubberDuckSelected);
+
+            mediator.RegisterBetweenQ(this, IsUseRubberDuckEnabled, modeTwoViewModel, modeTwoViewModel.IsThreeChecked);
+            mediator.RegisterBetweenQ(this, IsUseRubberDuckEnabled, modeTwoViewModel, modeTwoViewModel.IsFourChecked);
         }
 
         private bool _IsUsefulnessEnabled;
@@ -103,10 +106,8 @@ namespace DemoAfter
             get { return _PasswordText; }
             set 
             { 
-                _PasswordText = value; 
-                OnPropertyChanged();
-                modeOneViewModel.OnPropertyChanged(nameof(modeOneViewModel.AreSettingsEnabled));
-                modeOneViewModel.OnPropertyChanged(nameof(modeOneViewModel.IsCSettingEnabled));
+                _PasswordText = value;
+                mediator.OnPropertyChanged(this);
             }
         }
 
@@ -125,9 +126,8 @@ namespace DemoAfter
             get { return _IsUseRubberDuckSelected; }
             set 
             { 
-                _IsUseRubberDuckSelected = value; 
-                OnPropertyChanged();
-                modeOneViewModel.OnPropertyChanged(nameof(modeOneViewModel.IsCSettingEnabled));
+                _IsUseRubberDuckSelected = value;
+                mediator.OnPropertyChanged(this);
             }
         }
 
@@ -155,11 +155,6 @@ namespace DemoAfter
         private bool GetIsUseRubberDuckSelected()
         {
             return _IsUseRubberDuckSelected;
-        }
-
-        private void NotifyThreeOrFourChanged()
-        {
-            OnPropertyChanged(nameof(IsUseRubberDuckEnabled));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Oxylium
 {
@@ -34,41 +35,35 @@ namespace Oxylium
 
         private readonly Dictionary<NotificationItem, List<NotificationItem>> dictionary = new();
 
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "propertyDepends and onProperty are dummies")]
         public void RegisterQ(
             IRaisePropertyChanged item, 
             object propertyDepends, 
             object onProperty, 
-            [CallerArgumentExpression("propertyDepends")] string propertyName = "", 
-            [CallerArgumentExpression("onProperty")] string onPropertyName = "")
+            [CallerArgumentExpression("propertyDepends")] string propertyDependsExpression = "", 
+            [CallerArgumentExpression("onProperty")] string onPropertyExpression = "")
         {
-            Register(item, propertyName, onPropertyName);
+            RegisterBetween(item, GetProperty(propertyDependsExpression), item, GetProperty(onPropertyExpression));
         }
 
         public void Register(IRaisePropertyChanged item, string propertyDepends, string onProperty)
         {
-            var source = new NotificationItem(item, onProperty);
-            var target = new NotificationItem(item, propertyDepends);
-
-            if (!dictionary.ContainsKey(source))
-            {
-                dictionary.Add(source, new List<NotificationItem>());
-            }
-
-            dictionary[source].Add(target);
+            RegisterBetween(item, propertyDepends, item, onProperty);
         }
 
-        public void RegisterQ(
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "propertyDepends and onProperty are dummies")]
+        public void RegisterBetweenQ(
             IRaisePropertyChanged item, 
             object propertyDepends, 
             IRaisePropertyChanged onItem, 
             object onProperty, 
-            [CallerArgumentExpression("propertyDepends")] string propertyName = "", 
-            [CallerArgumentExpression("onProperty")] string onPropertyName = "")
+            [CallerArgumentExpression("propertyDepends")] string propertyDependsExpression = "", 
+            [CallerArgumentExpression("onProperty")] string onPropertyExpression = "")
         {
-            Register(item, propertyName, onItem, onPropertyName);
+            RegisterBetween(item, GetProperty(propertyDependsExpression), onItem, GetProperty(onPropertyExpression));
         }
 
-        public void Register(IRaisePropertyChanged item, string propertyDepends, IRaisePropertyChanged onItem, string onProperty)
+        public void RegisterBetween(IRaisePropertyChanged item, string propertyDepends, IRaisePropertyChanged onItem, string onProperty)
         {
             var source = new NotificationItem(onItem, onProperty);
             var target = new NotificationItem(item, propertyDepends);
@@ -110,6 +105,11 @@ namespace Oxylium
                     CollectNotifications(notificationItem, set);
                 }
             }
+        }
+
+        private static string GetProperty(string callerArgumentExpression)
+        {
+            return callerArgumentExpression.Split(".", StringSplitOptions.RemoveEmptyEntries).Last();
         }
     }
 }

@@ -1,10 +1,27 @@
-﻿using System;
+﻿using Oxylium;
+using System;
 
 namespace DemoAfter
 {
     public class ModeTwoViewModel : ViewModelBase
     {
-        public Action? NotifyThreeOrFourChanged { get; set; }
+        private readonly NotifyPropertyChangedMediator mediator;
+
+        public ModeTwoViewModel(NotifyPropertyChangedMediator mediator)
+        {
+            this.mediator = mediator;
+
+            mediator.RegisterQ(this, IsTwoEnabled, IsOneChecked);
+            mediator.RegisterQ(this, IsTwoChecked, IsOneChecked);
+
+            mediator.RegisterQ(this, IsTwoEnabled, IsTwoChecked);
+            mediator.RegisterQ(this, IsThreeEnabled, IsTwoChecked);
+            mediator.RegisterQ(this, IsThreeChecked, IsTwoChecked);
+
+            mediator.RegisterQ(this, IsThreeEnabled, IsThreeChecked);
+            mediator.RegisterQ(this, IsFourEnabled, IsThreeChecked);
+            mediator.RegisterQ(this, IsFourChecked, IsThreeChecked);
+        }
 
         private bool _IsOneChecked;
 
@@ -20,13 +37,7 @@ namespace DemoAfter
                     _IsThreeChecked = false;
                     _IsFourChecked = false;
                 }
-                OnPropertyChanged(); 
-                OnPropertyChanged(nameof(IsTwoEnabled)); 
-                OnPropertyChanged(nameof(IsThreeEnabled)); 
-                OnPropertyChanged(nameof(IsFourEnabled)); 
-                OnPropertyChanged(nameof(IsTwoChecked));
-                OnPropertyChanged(nameof(IsThreeChecked));
-                OnPropertyChanged(nameof(IsFourChecked));
+                mediator.OnPropertyChanged(this);
             }
         }
 
@@ -43,12 +54,7 @@ namespace DemoAfter
                     _IsThreeChecked = false;
                     _IsFourChecked = false;
                 }
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsTwoEnabled));
-                OnPropertyChanged(nameof(IsThreeEnabled));
-                OnPropertyChanged(nameof(IsFourEnabled));
-                OnPropertyChanged(nameof(IsThreeChecked));
-                OnPropertyChanged(nameof(IsFourChecked));
+                mediator.OnPropertyChanged(this);
             }
         }
 
@@ -69,12 +75,7 @@ namespace DemoAfter
                 {
                     _IsFourChecked = false;
                 }
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsTwoEnabled));
-                OnPropertyChanged(nameof(IsThreeEnabled));
-                OnPropertyChanged(nameof(IsFourEnabled));
-                OnPropertyChanged(nameof(IsFourChecked));
-                NotifyThreeOrFourChanged?.Invoke();
+                mediator.OnPropertyChanged(this);
             }
         }
 
@@ -91,8 +92,7 @@ namespace DemoAfter
             set 
             { 
                 _IsFourChecked = value;
-                OnPropertyChanged(); 
-                NotifyThreeOrFourChanged?.Invoke();
+                mediator.OnPropertyChanged(this);
             }
         }
 
