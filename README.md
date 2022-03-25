@@ -13,21 +13,25 @@ After installing Oxylium implement INotifyPropertyChanged and IRaisePropertyChan
 Then, create a mediator instance and register the property dependencies.
 
 Four registration methods are provided:
-
+```
   RegisterBetween(IRaisePropertyChanged item, string propertyDepends, IRaisePropertyChanged onItem, string onProperty)
   Register(IRaisePropertyChanged item, string propertyDepends, string onProperty)
-  RegisterBetweenQ(IRaisePropertyChanged item, object propertyDepends, IRaisePropertyChanged onItem, object onProperty, string propertyDependsExpression, string onPropertyExpression)
-  RegisterQ(IRaisePropertyChanged item, object propertyDepends, IRaisePropertyChanged onItem, object onProperty, string propertyDependsExpression, string onPropertyExpression)
-
+  RegisterBetweenQ(IRaisePropertyChanged item, object propertyDepends, IRaisePropertyChanged onItem, object onProperty, string propertyDependsExpression = "", string onPropertyExpression = "")
+  RegisterQ(IRaisePropertyChanged item, object propertyDepends, IRaisePropertyChanged onItem, object onProperty, string propertyDependsExpression = "", string onPropertyExpression = "")
+```
 RegisterBetween - Use when the dependency of properties spans two objects
 Register - Use when the dependency of properites is contained in the same object. Functionally identical to RegisterBetween(item, propertyDepends, item, onProperty)
 
 The Q variants (Shorthand for Quick) leverage the CallerArgumentExpression attribute to extract the property name via the used expression and are at most capable of extracting the property name when . is used.
 For example, this line will work:
+```
   mediator.RegisterBetweenQ(other, other.Prop1, this, this.Prop2);
+```
 Which is shorter than:
+```
   mediator.RegisterBetween(other, nameof(other.Prop1), this, nameof(this.Prop2);
+```
   
-Finally, call mediator.OnPropertyChanged(this); in your property setters. OnPropertyChanged in turn leverages the CallerMemberName attribute to extract the name of the property it was called from.
+Finally, call ```mediator.OnPropertyChanged(this);``` in your property setters. OnPropertyChanged in turn leverages the CallerMemberName attribute to extract the name of the property it was called from.
   
 In the event of errors a simple property checking mechanism has been implemented. If a given type does not contain the given property, then ArgumentException is thrown.
